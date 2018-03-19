@@ -270,6 +270,7 @@ GameObject:
   - component: {fileID: 665986261}
   - component: {fileID: 665986260}
   - component: {fileID: 665986259}
+  - component: {fileID: 665986262}
   m_Layer: 5
   m_Name: BtnPlay
   m_TagString: Untagged
@@ -334,7 +335,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 665986260}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1975238444}
+        m_MethodName: OnClickPlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &665986260
@@ -370,6 +382,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 665986257}
+--- !u!114 &665986262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 665986257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce63b3ac2530114da1ec5af59e2850b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &679795440
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,7 +739,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1516345342}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1975238444}
+        m_MethodName: OnClickExit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1516345342
@@ -824,6 +858,7 @@ GameObject:
   - component: {fileID: 1975238441}
   - component: {fileID: 1975238443}
   - component: {fileID: 1975238442}
+  - component: {fileID: 1975238444}
   m_Layer: 5
   m_Name: MainMenuPanel
   m_TagString: Untagged
@@ -884,3 +919,16 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1975238440}
+--- !u!114 &1975238444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1975238440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 393eacd07a2450e4fb8cb296e4a14da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BtnPlay: {fileID: 0}
+  m_BtnExit: {fileID: 0}
