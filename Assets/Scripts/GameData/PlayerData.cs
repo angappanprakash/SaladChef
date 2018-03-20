@@ -9,6 +9,7 @@ namespace GameData
 	{
 		public PlayerIndex	_playerIndex;
 		public string		_name;
+		public string 		_characterName;
 		public TeamType		_teamType;
 		public PlayerColor	_playerColor;
 	}

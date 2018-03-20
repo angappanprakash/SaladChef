@@ -2,13 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using GameData;
 
 public class GameManager : MonoBehaviour
 {
 #region Variables
-	public const int MAX_LOCAL_PLAYER_COUNT = 2;
+	public const int 			MAX_LOCAL_PLAYER_COUNT = 2;
 
-	private static GameManager m_Instance;
+	private static GameManager 	m_Instance;
+	private GameSession 		m_CurrentGameSession;
+	[SerializeField]
+	private GameEventSystem 	m_GameEventSystem;
+	private string 				m_CurrentLevelName;
 #endregion
 
 #region Properties
@@ -16,12 +21,30 @@ public class GameManager : MonoBehaviour
 	{
 		get { return m_Instance; }
 	}
+
+	public GameSession CurrentGameSession
+	{
+		get { return m_CurrentGameSession; }
+	}
+
+	public GameEventSystem GameEventSystem
+	{
+		get { return m_GameEventSystem; }
+	}
+
+	public string CurrentLevelName
+	{
+		get	{ return m_CurrentLevelName; }
+		set	{ m_CurrentLevelName = value; }
+	}
 #endregion
 
 #region Monobehaviour functions
 	private void Awake()
 	{
 		m_Instance = this;
+		m_CurrentGameSession = new GameSession();
+		CharacterDataLoader.Init();
 		SceneManager.LoadScene("MainMenu");
 	}
 

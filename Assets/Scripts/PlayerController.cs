@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 	private PlayerData 	m_PlayerData;
 
 	private float 		m_StateTimer = 0;
-	private float 		m_MoveSpeed = 20;
+	private float 		m_MoveSpeed = 5;
 #endregion
 
 #region Properties
@@ -74,12 +74,12 @@ public class PlayerController : MonoBehaviour
 
 	private void Update()
 	{
-		//ProcessState();
-		var x = Input.GetAxis("Horizontal") * Time.deltaTime * 150.0f;
-		var z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
-
-		transform.Rotate(0, x, 0);
-		transform.Translate(0, 0, z);
+		ProcessState();
+//		var x = Input.GetAxis("P1_Horizontal") * Time.deltaTime * 150.0f;
+//		var z = Input.GetAxis("P1_Vertical") * Time.deltaTime * 3.0f;
+//
+//		transform.Rotate(0, x, 0);
+//		transform.Translate(0, 0, z);
 	}
 
 	private void OnDestroy()
