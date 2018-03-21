@@ -108,9 +108,8 @@ public class LevelManager : MonoBehaviour
 		foreach (PlayerData playerData in GameManager.Instance.CurrentGameSession.ActivePlayers)
 		{
 			PlayerController playerController;
-			playerData._characterName = CharacterDataLoader.pCharactersList[GetNextSpawnMarkerIndex()]._name;
 			playerController = CreatePlayerInstance(playerData, m_SpawnMarkers[GetNextSpawnMarkerIndex()]);
-			Debug.Log("spawn marker index:"+ GetNextSpawnMarkerIndex());
+			//Debug.Log("spawn marker index:"+ m_SpawnMarkers[GetNextSpawnMarkerIndex()].name);
 
 			m_PlayersList.Add(playerController);
 		}
@@ -125,12 +124,6 @@ public class LevelManager : MonoBehaviour
 	private int GetNextSpawnMarkerIndex()
 	{
 		return ((++m_NextSpawnMarkerIndex) % m_SpawnMarkers.Length);
-	}
-
-	private PlayerController CreatePlayerInstance(PlayerIndex playerIndex, Transform spawnMarker = null)
-	{
-		PlayerData playerData = GameManager.Instance.CurrentGameSession.GetPlayerData(playerIndex);
-		return CreatePlayerInstance(playerData, spawnMarker);
 	}
 
 	private PlayerController CreatePlayerInstance(PlayerData playerData, Transform spawnMarker = null)

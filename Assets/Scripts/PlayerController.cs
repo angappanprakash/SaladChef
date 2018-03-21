@@ -8,7 +8,10 @@ public class PlayerController : MonoBehaviour
 {
 #region Variables
 	[SerializeField]
-	private Collider 	m_Collider = null;
+	private Collider 			m_Collider = null;
+	[SerializeField]
+	private List<GameObject>	m_Vegetables;
+		
 
 	private PlayerIndex m_PlayerIndex;
 	private PlayerState m_CurrentState;
@@ -75,11 +78,14 @@ public class PlayerController : MonoBehaviour
 	private void Update()
 	{
 		ProcessState();
-//		var x = Input.GetAxis("P1_Horizontal") * Time.deltaTime * 150.0f;
-//		var z = Input.GetAxis("P1_Vertical") * Time.deltaTime * 3.0f;
-//
-//		transform.Rotate(0, x, 0);
-//		transform.Translate(0, 0, z);
+	}
+
+	private void OnTriggerEnter(Collider collider)
+	{
+		if (collider.tag == "Vegetable")
+		{
+			Debug.Log("collided with:"+ collider.name);
+		}
 	}
 
 	private void OnDestroy()

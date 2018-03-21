@@ -40,18 +40,20 @@ public class GameSession
 		if(m_ActivePlayers.Count == MAX_LOCAL_PLAYER_COUNT)
 			return;
 
-		PlayerIndex playerIndex;
-
 		//TEMP FIX
-		if(index == 1)
-			playerIndex = PlayerIndex.PLAYER1;
-		else
-			playerIndex = PlayerIndex.PLAYER2;
-		
 		PlayerData newPlayer = new PlayerData();
-		newPlayer._playerIndex = playerIndex;
-		newPlayer._name = playerIndex.ToString();
+		if(index == 0)
+		{
+			newPlayer._playerIndex = PlayerIndex.PLAYER1;
+			newPlayer._characterName = "Jerry";
+		}
+		else
+		{
+			newPlayer._playerIndex = PlayerIndex.PLAYER2;
+			newPlayer._characterName = "Tom";
+		}
 
+		newPlayer._name = newPlayer._playerIndex.ToString();
 		m_ActivePlayers.Add(newPlayer);
 	}
 
