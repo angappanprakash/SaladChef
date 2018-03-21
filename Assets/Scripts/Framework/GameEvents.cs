@@ -11,5 +11,7 @@ public class GameEventsList
 		GAME_PAUSED,
 		GAME_RESUMED,
 		GAME_END,
+
+		ON_COLLECT_VEGETABLE
 	}
 }

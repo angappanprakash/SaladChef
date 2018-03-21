@@ -29,6 +29,7 @@ public class LevelManager : MonoBehaviour
 	private Transform               m_SpawnMarkersParent;
 
 	private const string	DATA_ASSETS_PATH = "CharacterAssets/CharacterCommonData";
+	private const string	VEGETABLE_ASSETS_PATH = "Vegetables";
 #endregion
 
 #region Properties
@@ -145,6 +146,12 @@ public class LevelManager : MonoBehaviour
 	public PlayerController GetPlayer(PlayerIndex playerIndex)
 	{
 		return m_PlayersList.Find(x => x.PlayerIndex == playerIndex);
+	}
+
+	public Vegetable CreateVegetable(VegetableDispenserType dispenserType)
+	{
+		GameObject go = (GameObject)Instantiate(Resources.Load(VEGETABLE_ASSETS_PATH+"/"+dispenserType.ToString()));
+		return go.GetComponent<Vegetable>();
 	}
 
 	public void EndGame()

@@ -7,11 +7,11 @@ using GameData;
 public class PlayerController : MonoBehaviour
 {
 #region Variables
+	public const int			MAX_VEGETABLES_CAN_CARRY = 2;
 	[SerializeField]
 	private Collider 			m_Collider = null;
 	[SerializeField]
-	private List<GameObject>	m_Vegetables;
-		
+	private List<Vegetable>		m_Vegetables;
 
 	private PlayerIndex m_PlayerIndex;
 	private PlayerState m_CurrentState;
@@ -25,6 +25,8 @@ public class PlayerController : MonoBehaviour
 
 	private float 		m_StateTimer = 0;
 	private float 		m_MoveSpeed = 5;
+	private bool		m_IsInsideTrigger;
+	private GameObject 	m_CollidedObject;
 #endregion
 
 #region Properties
@@ -82,9 +84,19 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerEnter(Collider collider)
 	{
-		if (collider.tag == "Vegetable")
+		if (collider.tag == "VegetableDispenser")
 		{
-			Debug.Log("collided with:"+ collider.name);
+			m_CollidedObject = collider.gameObject;
+			m_IsInsideTrigger = true;
+		}
+	}
+
+	private void OnTriggerExit(Collider collider)
+	{
+		if (collider.tag == "VegetableDispenser")
+		{
+			m_CollidedObject = collider.gameObject;
+			m_IsInsideTrigger = false;
 		}
 	}
 
@@ -130,6 +142,11 @@ public class PlayerController : MonoBehaviour
 				}
 				break;
 			}
+		case PlayerInputAction.INTERACTION:
+			{
+				SetState(PlayerState.INTERACTION);
+			}
+			break;
 
 		case PlayerInputAction.PAUSE:
 			{
@@ -152,6 +169,8 @@ public class PlayerController : MonoBehaviour
 		case PlayerState.IDLE:
 			m_RigidBody.velocity = Vector3.zero;
 			break;
+		case PlayerState.INTERACTION:
+			break;
 		}
 	}
 
@@ -161,6 +180,19 @@ public class PlayerController : MonoBehaviour
 
 		switch (m_CurrentState)
 		{
+		case PlayerState.INTERACTION:
+			if(m_IsInsideTrigger)
+			{
+				if(m_CollidedObject.tag == "VegetableDispenser")
+				{
+					VegetableDispenserType dispenserType = m_CollidedObject.GetComponent<VegetableDispenser>().DispenserType;
+					AddVegetable(dispenserType);
+					m_IsInsideTrigger = false;
+					SetState(PlayerState.IDLE);
+				}
+				//Debug.Log("collided object: " +(m_CollidedObject.tag));
+			}
+			break;
 		default:
 			break;
 		}
@@ -193,5 +225,42 @@ public class PlayerController : MonoBehaviour
 			return "P-INVALID";
 		}
 	}
+
+	private void AddVegetable(VegetableDispenserType DispenserType)
+	{
+		if(m_Vegetables != null)
+		{
+			if(m_Vegetables.Count == MAX_VEGETABLES_CAN_CARRY)
+				return;
+			Vegetable veg = LevelManager.Instance.CreateVegetable(DispenserType);
+			veg.transform.parent = this.transform;
+			SetDefaultLocalTransform(veg.gameObject);
+			m_Vegetables.Add(veg);
+		}
+	}
+
+	private void RemoveVegetable(Vegetable vegetable)
+	{
+		if(m_Vegetables != null)
+		{
+			if(m_Vegetables.Count == 0)
+				return;
+
+			m_Vegetables.Remove(vegetable);
+		}
+	}
+
+	private void ProcessInteraction()
+	{
+		
+	}
+
+	public static void SetDefaultLocalTransform(GameObject obj)
+	{
+		obj.transform.localPosition = Vector3.zero;
+		obj.transform.localRotation = Quaternion.identity;
+		obj.transform.localScale = Vector3.one;
+	}
+
 	#endregion
 }

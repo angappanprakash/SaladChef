@@ -4,8 +4,10 @@ using System.Collections.Generic;
 
 public enum PlayerInputAction
 {
-	MOVE,
-    PAUSE
+	MOVE = 0,
+    PAUSE,
+	INTERACTION,
+	NONE = -1
 }
 
 public class PlayerInputEventData
@@ -16,9 +18,9 @@ public class PlayerInputEventData
 
 public enum ControlMap
 {
-	NONE = -1,
-	ASWD_KEYS,
-	ARROW_KEYS
+	ASWD_KEYS = 0,
+	ARROW_KEYS,
+	NONE = -1
 }
 
 public class PlayerInput : MonoBehaviour
@@ -43,9 +45,9 @@ public class PlayerInput : MonoBehaviour
 	{
 		if(m_Controller != null)
 		{
-			
 			float horizontalComp = Input.GetAxis(GetPlayerControl(m_ControlMap)+"Horizontal");
 			float verticalComp = Input.GetAxis(GetPlayerControl(m_ControlMap)+"Vertical");
+			float interactionComp = Input.GetAxis(GetPlayerControl(m_ControlMap)+"Interaction");
 //			if(Mathf.Abs(horizontalComp) > 0.01f || Mathf.Abs(verticalComp) > 0.01f)
 			{
 				PlayerInputEventData eventData = new PlayerInputEventData();
@@ -54,6 +56,13 @@ public class PlayerInput : MonoBehaviour
 				values.Add("horizontal", horizontalComp);
 				values.Add("vertical", verticalComp);
 				eventData._data = values;
+				SendMessage("OnPlayerInput", eventData, SendMessageOptions.DontRequireReceiver);
+			}
+
+			if(Mathf.Abs(interactionComp) > 0.01f)
+			{
+				PlayerInputEventData eventData = new PlayerInputEventData();
+				eventData._type = PlayerInputAction.INTERACTION;
 				SendMessage("OnPlayerInput", eventData, SendMessageOptions.DontRequireReceiver);
 			}
         }

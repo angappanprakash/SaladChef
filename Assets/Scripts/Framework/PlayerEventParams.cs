@@ -50,3 +50,13 @@ public class ScoreUpdateEventArgs : PlayerEventParams
 		NewScore = newScore;
 	}
 }
+
+public class OnCollectVegetableEventArgs : PlayerEventParams
+{
+	public Vegetable vegetable;
+	public OnCollectVegetableEventArgs(PlayerIndex playerIndex, Vegetable vegetable)
+	{
+		PlayerIndex = playerIndex;
+		vegetable = vegetable;
+	}
+}

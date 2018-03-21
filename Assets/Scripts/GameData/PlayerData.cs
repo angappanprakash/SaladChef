@@ -41,6 +41,7 @@ namespace GameData
 		SPAWN,
 		IDLE,
 		RUNNING,
+		INTERACTION,
 		FRUIT_EFFECT,
     }
 }

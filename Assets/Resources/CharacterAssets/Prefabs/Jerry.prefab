@@ -113,7 +113,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1641123078101682
 GameObject:
   m_ObjectHideFlags: 1
@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 54290645835467062}
   m_Layer: 0
   m_Name: Jerry
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -944,6 +944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Collider: {fileID: 65934189244607034}
+  m_Vegetables: []
 --- !u!114 &114370976779638726
 MonoBehaviour:
   m_ObjectHideFlags: 1
