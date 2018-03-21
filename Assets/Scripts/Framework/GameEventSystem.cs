@@ -13,12 +13,13 @@ public class EventIds
 
 public class GameEventSystem : MonoBehaviour
 {
-	#region Variables
+#region Variables
 	public System.Action<PlayerEventParams> GameEventHandlers;
 	[SerializeField]
 	private List<EventIds> m_EventIdMapper = new List<EventIds>();
-	#endregion
+#endregion
 
+#region Class specific functions
 	public void SubscribeEvent(GameEventsList.PlayerEvents EventType, System.Action<PlayerEventParams> eventHandler)
 	{
 		GameEventHandlers += eventHandler;
@@ -72,4 +73,5 @@ public class GameEventSystem : MonoBehaviour
 			}
 		}
 	}
+#endregion
 }

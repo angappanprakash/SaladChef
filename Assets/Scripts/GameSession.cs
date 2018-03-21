@@ -12,7 +12,7 @@ public class GameSession
 #endregion
 
 #region Properties
-	public List<PlayerData>	ActivePlayers
+	public List<PlayerData>	pActivePlayers
 	{
 		get { return m_ActivePlayers; }
 	}
@@ -21,10 +21,9 @@ public class GameSession
 	{
 		m_ActivePlayers.Clear ();
 	}
+#endregion
 
-	#endregion
-
-	#region Class specific functions
+#region Class specific functions
 	public GameSession()
 	{
 		m_ActivePlayers = new List<PlayerData>();
@@ -46,11 +45,13 @@ public class GameSession
 		{
 			newPlayer._playerIndex = PlayerIndex.PLAYER1;
 			newPlayer._characterName = "Jerry";
+			newPlayer._playerColor = PlayerColor.BLUE;
 		}
 		else
 		{
 			newPlayer._playerIndex = PlayerIndex.PLAYER2;
 			newPlayer._characterName = "Tom";
+			newPlayer._playerColor = PlayerColor.RED;
 		}
 
 		newPlayer._name = newPlayer._playerIndex.ToString();
@@ -61,6 +62,5 @@ public class GameSession
 	{
 		return m_ActivePlayers.Find(x => x._playerIndex == playerIndex);
 	}
-
-	#endregion
+#endregion
 }

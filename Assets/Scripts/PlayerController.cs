@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private Collider 			m_Collider = null;
 	[SerializeField]
-	private List<Vegetable>		m_Vegetables;
+	public List<Vegetable>		m_Vegetables;
 
 	private PlayerIndex m_PlayerIndex;
 	private PlayerState m_CurrentState;
@@ -30,32 +30,32 @@ public class PlayerController : MonoBehaviour
 #endregion
 
 #region Properties
-	public PlayerState CurrentState
+	public PlayerState pCurrentState
 	{
 		get { return m_CurrentState; }
 	}
 
-	public PlayerIndex PlayerIndex
+	public PlayerIndex pPlayerIndex
 	{
 		get { return m_PlayerIndex; }
 	}
 
-	public Vector3 MoveDirection
+	public Vector3 pMoveDirection
 	{
 		get { return m_MoveDirection; }
 	}
 
-	public Rigidbody RigidBody
+	public Rigidbody pRigidBody
 	{
 		get { return m_RigidBody; }
 	}
 
-	public Collider PlayerCollider
+	public Collider pPlayerCollider
 	{
 		get	{ return m_Collider; }
 	}
 
-	public PlayerData PlayerData
+	public PlayerData pPlayerData
 	{
 		get { return m_PlayerData; }
 	}
@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerEnter(Collider collider)
 	{
-		if (collider.tag == "VegetableDispenser")
+		if (collider.tag == "VegetableDispenser" || collider.tag == "ChoppingBoard" || collider.tag == "NextToChop" || collider.tag == "CustomerSlot")
 		{
 			m_CollidedObject = collider.gameObject;
 			m_IsInsideTrigger = true;
@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerExit(Collider collider)
 	{
-		if (collider.tag == "VegetableDispenser")
+		if (collider.tag == "VegetableDispenser" || collider.tag == "ChoppingBoard" || collider.tag == "NextToChop" || collider.tag == "CustomerSlot")
 		{
 			m_CollidedObject = collider.gameObject;
 			m_IsInsideTrigger = false;
@@ -106,9 +106,10 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	#region Class specific functions
-	public void Init(PlayerIndex playerIndex)
+	public void Init(PlayerData playerData)
 	{
-		m_PlayerIndex = playerIndex;
+		m_PlayerData = playerData;
+		m_PlayerIndex = m_PlayerData._playerIndex;
 		m_MoveDirection = transform.forward;
 	}
 
@@ -118,7 +119,7 @@ public class PlayerController : MonoBehaviour
 		{
 		case PlayerInputAction.MOVE:
 			{
-				if (CanProcessState(PlayerState.RUNNING))
+				if (CanProcessState(PlayerState.RUNNING)  && m_CurrentState != PlayerState.CHOPPING)
 				{
 					Dictionary<string, float> values = (Dictionary<string, float>)eventData._data;
 					float horizontalComp = values["horizontal"];
@@ -144,7 +145,8 @@ public class PlayerController : MonoBehaviour
 			}
 		case PlayerInputAction.INTERACTION:
 			{
-				SetState(PlayerState.INTERACTION);
+				if(m_IsInsideTrigger)
+					SetState(PlayerState.INTERACTION);
 			}
 			break;
 
@@ -169,8 +171,6 @@ public class PlayerController : MonoBehaviour
 		case PlayerState.IDLE:
 			m_RigidBody.velocity = Vector3.zero;
 			break;
-		case PlayerState.INTERACTION:
-			break;
 		}
 	}
 
@@ -181,17 +181,7 @@ public class PlayerController : MonoBehaviour
 		switch (m_CurrentState)
 		{
 		case PlayerState.INTERACTION:
-			if(m_IsInsideTrigger)
-			{
-				if(m_CollidedObject.tag == "VegetableDispenser")
-				{
-					VegetableDispenserType dispenserType = m_CollidedObject.GetComponent<VegetableDispenser>().DispenserType;
-					AddVegetable(dispenserType);
-					m_IsInsideTrigger = false;
-					SetState(PlayerState.IDLE);
-				}
-				//Debug.Log("collided object: " +(m_CollidedObject.tag));
-			}
+				ProcessInteraction();
 			break;
 		default:
 			break;
@@ -211,9 +201,57 @@ public class PlayerController : MonoBehaviour
 		return canProcess;
 	}
 
+	public bool IsAlreadyExists(VegetableDispenserType dispenserType)
+	{
+		for(int i=0; i < m_Vegetables.Count; i++)
+		{
+			if(m_Vegetables[i].pVegetableType.ToString() == dispenserType.ToString())
+				return true;
+		}
+		return false;
+	}
+
+	private void ProcessInteraction()
+	{
+		switch(m_CollidedObject.tag)
+		{
+		case "VegetableDispenser":
+			VegetableDispenserType dispenserType = m_CollidedObject.GetComponent<VegetableDispenser>().pDispenserType;
+			if(!IsAlreadyExists(dispenserType))
+				AddVegetable(dispenserType);
+			break;
+		case "ChoppingBoard":
+			if(m_Vegetables.Count > 0)
+			{
+				ChoppingBoard choppingBoard = m_CollidedObject.GetComponent<ChoppingBoard>();
+
+				if(choppingBoard.CanAdd())
+				{
+					Vegetable veg = m_Vegetables[0];
+					choppingBoard.AddVegetable(veg.pVegetableType);
+					RemoveVegetable(veg);
+					GameObject go = Utilities.Util.FindChildObject(gameObject, veg.name);
+					veg.transform.SetParent(null);
+					Destroy(go);
+				}
+			}
+			break;
+		case "NextToChop":
+			if(m_Vegetables.Count > 0)
+			{
+				
+			}
+			break;
+		case "Customer":
+			break;
+		}
+
+		SetState(PlayerState.IDLE);
+	}
+
 	private string GetPlayerID(PlayerIndex playerIndex)
 	{
-		switch(PlayerIndex)
+		switch(pPlayerIndex)
 		{
 		case PlayerIndex.PLAYER1:
 			return "P1";
@@ -226,6 +264,11 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
+	private Vegetable GetNextVegOnList()
+	{
+		return m_Vegetables[0];
+	}
+
 	private void AddVegetable(VegetableDispenserType DispenserType)
 	{
 		if(m_Vegetables != null)
@@ -234,8 +277,10 @@ public class PlayerController : MonoBehaviour
 				return;
 			Vegetable veg = LevelManager.Instance.CreateVegetable(DispenserType);
 			veg.transform.parent = this.transform;
-			SetDefaultLocalTransform(veg.gameObject);
+			veg.pOwner = this.gameObject.GetComponent<PlayerController>();
+			Utilities.Util.SetDefaultLocalTransform(veg.gameObject);
 			m_Vegetables.Add(veg);
+			GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.ON_COLLECT_VEGETABLE, new OnCollectVegetableEventArgs(this.gameObject.GetComponent<PlayerController>(), veg));
 		}
 	}
 
@@ -245,14 +290,9 @@ public class PlayerController : MonoBehaviour
 		{
 			if(m_Vegetables.Count == 0)
 				return;
-
+			GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.ON_REMOVE_VEGETABLE, new OnRemoveVegetableEventArgs(this.gameObject.GetComponent<PlayerController>(), vegetable));
 			m_Vegetables.Remove(vegetable);
 		}
-	}
-
-	private void ProcessInteraction()
-	{
-		
 	}
 
 	public static void SetDefaultLocalTransform(GameObject obj)

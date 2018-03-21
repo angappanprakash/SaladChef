@@ -38,27 +38,27 @@ public class LevelManager : MonoBehaviour
 		get { return m_Instance; }
 	}
 
-	public List<PlayerController> PlayersList
+	public List<PlayerController> pPlayersList
 	{
 		get { return m_PlayersList; }
 	}
 
-	public float GameTimer
+	public float pGameTimer
 	{
 		get { return m_GameTimer; }
 	}
 
-	public GameState CurrentGameState
+	public GameState pCurrentGameState
 	{
 		get { return m_CurrentGameState; }
 	}
 
-	public CharacterCommonData CharacterCommonData
+	public CharacterCommonData pCharacterCommonData
 	{
 		get { return m_CharacterCommonData;}
 	}
 
-	public Transform SpawnMarkersParent
+	public Transform pSpawnMarkersParent
 	{
 		get { return m_SpawnMarkersParent; }
 	}
@@ -106,7 +106,7 @@ public class LevelManager : MonoBehaviour
 		Time.timeScale = 1;
 
 		m_PlayersList = new List<PlayerController>();
-		foreach (PlayerData playerData in GameManager.Instance.CurrentGameSession.ActivePlayers)
+		foreach (PlayerData playerData in GameManager.Instance.pCurrentGameSession.pActivePlayers)
 		{
 			PlayerController playerController;
 			playerController = CreatePlayerInstance(playerData, m_SpawnMarkers[GetNextSpawnMarkerIndex()]);
@@ -119,7 +119,7 @@ public class LevelManager : MonoBehaviour
 
 		m_CurrentGameState = GameState.IN_PROGRESS;
 
-		GameManager.Instance.GameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.GAME_START, new GameStartEventArgs());
+		GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.GAME_START, new GameStartEventArgs());
 	}
 
 	private int GetNextSpawnMarkerIndex()
@@ -138,14 +138,14 @@ public class LevelManager : MonoBehaviour
 			playerObj.transform.rotation = spawnMarker.rotation;
 		}
 		PlayerController playerController = playerObj.GetComponent<PlayerController>();
-		playerController.Init(playerData._playerIndex);
+		playerController.Init(playerData);
 
 		return playerController;
 	}
 
 	public PlayerController GetPlayer(PlayerIndex playerIndex)
 	{
-		return m_PlayersList.Find(x => x.PlayerIndex == playerIndex);
+		return m_PlayersList.Find(x => x.pPlayerIndex == playerIndex);
 	}
 
 	public Vegetable CreateVegetable(VegetableDispenserType dispenserType)
@@ -154,10 +154,16 @@ public class LevelManager : MonoBehaviour
 		return go.GetComponent<Vegetable>();
 	}
 
+	public Vegetable CreateVegetable(VegetableType veg)
+	{
+		GameObject go = (GameObject)Instantiate(Resources.Load(VEGETABLE_ASSETS_PATH+"/"+veg.ToString()));
+		return go.GetComponent<Vegetable>();
+	}
+
 	public void EndGame()
 	{
 		m_CurrentGameState = GameState.ENDED;
-		GameManager.Instance.GameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.GAME_END, new GameEndEventArgs());
+		GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.GAME_END, new GameEndEventArgs());
 	}
 
 	private void SetCameraTargets()
@@ -173,7 +179,7 @@ public class LevelManager : MonoBehaviour
 
 	public void PauseGame(PlayerIndex playerIndex)
 	{
-		GameManager.Instance.GameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.GAME_PAUSED, new GamePausedEventArgs());
+		GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.GAME_PAUSED, new GamePausedEventArgs());
 
 		Time.timeScale = 0;
 		m_CurrentGameState = GameState.PAUSED;
@@ -185,7 +191,7 @@ public class LevelManager : MonoBehaviour
 		Time.timeScale = 1;
 		m_CurrentGameState = GameState.IN_PROGRESS;
 
-		GameManager.Instance.GameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.GAME_RESUMED, new GameResumedEventArgs());
+		GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.GAME_RESUMED, new GameResumedEventArgs());
 	}
 
 	public void ResetCurrentLevel()

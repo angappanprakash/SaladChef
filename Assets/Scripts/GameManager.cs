@@ -22,17 +22,17 @@ public class GameManager : MonoBehaviour
 		get { return m_Instance; }
 	}
 
-	public GameSession CurrentGameSession
+	public GameSession pCurrentGameSession
 	{
 		get { return m_CurrentGameSession; }
 	}
 
-	public GameEventSystem GameEventSystem
+	public GameEventSystem pGameEventSystem
 	{
 		get { return m_GameEventSystem; }
 	}
 
-	public string CurrentLevelName
+	public string pCurrentLevelName
 	{
 		get	{ return m_CurrentLevelName; }
 		set	{ m_CurrentLevelName = value; }

@@ -72,7 +72,7 @@ public class PlayerInput : MonoBehaviour
 #region Class specific functions
 	private void SetDefaultControls()
 	{
-		if(m_Controller.PlayerIndex == GameData.PlayerIndex.PLAYER1)
+		if(m_Controller.pPlayerIndex == GameData.PlayerIndex.PLAYER1)
 			m_ControlMap = ControlMap.ASWD_KEYS;
 		else
 			m_ControlMap = ControlMap.ARROW_KEYS;

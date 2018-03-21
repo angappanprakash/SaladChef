@@ -11,12 +11,14 @@ public class CharacterCommonData : ScriptableObject
         public PlayerColor _playerColor;
         public Color       _colorValue;
     }
-
+#region Variables
     public float _runSpeed;
     public float _minRunSpeed;
     public float _maxRunSpeed;
     public List<ColorMap> _colorMaps;
+#endregion
 
+#region Class specific functions
     public Color GetColorValue(PlayerColor playerColor)
     {
         ColorMap colorMap = _colorMaps.Find(x => x._playerColor == playerColor);
@@ -25,4 +27,5 @@ public class CharacterCommonData : ScriptableObject
 
         return Color.white;
     }
+#endregion
 }

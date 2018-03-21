@@ -54,9 +54,23 @@ public class ScoreUpdateEventArgs : PlayerEventParams
 public class OnCollectVegetableEventArgs : PlayerEventParams
 {
 	public Vegetable vegetable;
-	public OnCollectVegetableEventArgs(PlayerIndex playerIndex, Vegetable vegetable)
+	public PlayerController playerController;
+
+	public OnCollectVegetableEventArgs(PlayerController playerCtrl, Vegetable veg)
 	{
-		PlayerIndex = playerIndex;
-		vegetable = vegetable;
+		playerController = playerCtrl;
+		vegetable = veg;
+	}
+}
+
+public class OnRemoveVegetableEventArgs : PlayerEventParams
+{
+	public Vegetable vegetable;
+	public PlayerController playerController;
+
+	public OnRemoveVegetableEventArgs(PlayerController playerCtrl, Vegetable veg)
+	{
+		playerController = playerCtrl;
+		vegetable = veg;
 	}
 }

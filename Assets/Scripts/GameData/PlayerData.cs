@@ -10,38 +10,32 @@ namespace GameData
 		public PlayerIndex	_playerIndex;
 		public string		_name;
 		public string 		_characterName;
-		public TeamType		_teamType;
 		public PlayerColor	_playerColor;
 	}
 
-    public enum TeamType
-    {
-        NONE,
-        RED,
-        BLUE
-    }
 	public enum PlayerIndex
 	{
-		INVALID = -1,
-		PLAYER1,
-		PLAYER2
+		PLAYER1 = 0,
+		PLAYER2,
+		INVALID = -1
 	}
 
 	[System.Serializable]
 	public enum PlayerColor
 	{
-        NONE = -1,
-        BLUE,
-        RED
+        BLUE = 0,
+        RED,
+		NONE = -1
 	}
 
 	public enum PlayerState
 	{
-		NONE = -1,
-		SPAWN,
+		SPAWN = 0,
 		IDLE,
 		RUNNING,
 		INTERACTION,
+		CHOPPING,
 		FRUIT_EFFECT,
+		NONE = -1
     }
 }

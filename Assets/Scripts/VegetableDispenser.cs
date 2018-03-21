@@ -15,6 +15,7 @@ public enum VegetableDispenserType
 
 public class VegetableDispenser : MonoBehaviour 
 {
+#region Variables
 	[SerializeField]
 	protected VegetableDispenserType 	_type;
 	[SerializeField]
@@ -23,12 +24,16 @@ public class VegetableDispenser : MonoBehaviour
 	private bool						m_IsHighlighted;
 	private bool						m_IsTriggerStay;
 	private PlayerController 			m_CollidedPlayer;
+#endregion
 
-	public VegetableDispenserType DispenserType
+#region Properties
+	public VegetableDispenserType pDispenserType
 	{
 		get { return _type; }
 	}
+#endregion
 
+#region Monobehaviour functions
 	protected virtual void Awake()
 	{
 		_hightlight.gameObject.SetActive(false);
@@ -66,11 +71,14 @@ public class VegetableDispenser : MonoBehaviour
 				HighLight(false);
 		}
 	}
+#endregion
 
+#region Class specific functions
 	protected virtual void HighLight(bool flag)
 	{
 		_hightlight.gameObject.SetActive(flag);
 		m_IsHighlighted = flag;
 	}
+#endregion
 }
 

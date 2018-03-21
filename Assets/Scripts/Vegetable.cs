@@ -13,29 +13,56 @@ public enum VegetableType
 	NONE= -1
 }
 
-public enum VegatableState
+public enum VegetableState
 {
 	IDLE = 0,
 	CHOPPED,
+	READY_TO_CHOP,
 	NONE = -1
 }
 
 public class Vegetable : MonoBehaviour 
 {
+#region Variables
 	[SerializeField]
-	protected VegetableType _vegetableType;
-	private bool			m_IsTriggerStay;
-	private PlayerController m_CollidedPlayer;
+	protected VegetableType 	_vegetableType;
+	[SerializeField]
+	protected float				m_ChoppingDuration = 5.0f;
+	private PlayerController 	m_Owner;
 
-	public VegetableType VegetableType
+	protected VegetableState	m_CurrentState;
+	protected VegetableState 	m_PreviousState;
+
+	private float           	mStateTimer;
+#endregion
+
+#region Properties
+	public VegetableType pVegetableType
 	{
 		get { return _vegetableType; }
 	}
 
+	public VegetableState pCurrentState
+	{
+		get { return m_CurrentState; }
+	}
+
+	public float pChoppingDuration
+	{
+		get { return m_ChoppingDuration; }
+	}
+
+	public PlayerController pOwner
+	{
+		get { return m_Owner;	}
+		set { m_Owner = value;	}
+	}
+#endregion
+
+#region Monobehaviour functions
 	protected virtual void Awake()
 	{
-		m_IsTriggerStay = false;
-		m_CollidedPlayer = null;
+		m_Owner = null;
 	}
 
 	protected virtual void Start () 
@@ -48,23 +75,9 @@ public class Vegetable : MonoBehaviour
 		
 	}
 
-	protected virtual void OnTriggerEnter(Collider collider)
+	public void SetOwner(PlayerController owner)
 	{
-		if(collider.tag == "Player")
-		{
-			m_CollidedPlayer = collider.GetComponentInParent<PlayerController>();
-		}
+		m_Owner = owner;
 	}
-
-	protected virtual void OnTriggerExit(Collider collider)
-	{
-		if(collider.tag == "Player")
-		{
-			m_CollidedPlayer = collider.GetComponentInParent<PlayerController>();
-		}
-	}
-
-	protected virtual void HighLight(bool flag)
-	{
-	}
+#endregion
 }
