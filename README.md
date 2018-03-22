@@ -1,7 +1,6 @@
-# SaladChef
+SaladChef
 
-
-//--Controls---
+Controls:
 Player 1
 Movement - ASWD
 Interaction/Accept - Left Control Key
@@ -43,22 +42,22 @@ Features Missing:
 3. Chopping board timer
 4. Next to chopping board
 5. Timer for players
+6. Trash can
 
 Bugs to Fix:
 1. Random crash 1 out of 20 times
 2. Pop up on[attached/picked vegetable notification] top of the players has to be fixed
 
 Things need to done:
-
 1. Importing place holder art assets - 3d/2d from unity assets.
 2. Texture packer for after adding more textures. 
 3. Every vegetable/salad/power up class can be overridden on their child classes for their specific behaviour.
 
-Features to think about:
+Future implementaions can be:
 1. Different Game modes - Team based, Free for all.
 2. Different levels/maps.
 
-//--Code Design---
+Code Design:
 1. Its a mixture of data driven and state base and extendable classes.
 2. Singleton classes - All manager class, such as game manager, Level manager, Audio manager and etc.
 3. Generic Game Event System - To avoid having delegats all over, to keep everything in a place and clean.
