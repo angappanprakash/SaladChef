@@ -11,7 +11,8 @@ public enum ChoppingBoardType
 
 public enum BoardState
 {
-	COLLECTED_VEG = 0,
+	IDLE = 0,
+	COLLECTED_VEG,
 	CHOPPING,
 	COMPLETED,
 	MAKE_SALAD,
@@ -19,19 +20,9 @@ public enum BoardState
 	NONE = -1
 }
 
-public class ChoppingBoardDelegates
-{
-	public delegate void OnChoppingBegin(ChoppingBoard boss);
-	public delegate void OnChoppingEnd(ChoppingBoard boss);
-	public delegate void OnUpdateChoppedList(ChoppingBoard boss);
-}
-
 public class ChoppingBoard : MonoBehaviour 
 {
 #region Variables
-	public static event ChoppingBoardDelegates.OnChoppingBegin 		_onChoppingBegin;
-	public static event ChoppingBoardDelegates.OnChoppingEnd		_onChoppingEnd;
-	public static event ChoppingBoardDelegates.OnUpdateChoppedList	_onnUpdateChoppedList;
 
 	public const int					MAX_VEGETABLES = 3;
 	[SerializeField]
@@ -40,7 +31,6 @@ public class ChoppingBoard : MonoBehaviour
 	private GameObject					_hightlight;
 
 	private bool						m_IsHighlighted;
-	private bool						m_IsTriggerStay;
 	private PlayerController 			m_CollidedPlayer;
 	[SerializeField]
 	private List<Vegetable> 			m_ChoppedList;
@@ -68,7 +58,6 @@ public class ChoppingBoard : MonoBehaviour
 	{
 		_hightlight.gameObject.SetActive(false);
 		m_IsHighlighted = false;
-		m_IsTriggerStay = false;
 		m_CollidedPlayer = null;
 		m_ChoppedList = new List<Vegetable>();
 	}
@@ -116,7 +105,7 @@ public class ChoppingBoard : MonoBehaviour
 			veg.pOwner = this.gameObject.GetComponent<PlayerController>();
 			m_CurrentVegOnBoard = veg;
 			Utilities.Util.SetDefaultLocalTransform(veg.gameObject);
-			SetState(BoardState.CHOPPING);
+			SetState(BoardState.COLLECTED_VEG);
 		}
 	}
 
@@ -131,16 +120,27 @@ public class ChoppingBoard : MonoBehaviour
 
 		switch (m_CurrentState)
 		{
-		case BoardState.CHOPPING:
+		case BoardState.IDLE:
+			break;
+		case BoardState.COLLECTED_VEG:
 			m_StateTimer = m_CurrentVegOnBoard.pChoppingDuration;
+			SetState(BoardState.CHOPPING);
+			break;
+		case BoardState.CHOPPING:
 			break;
 		case BoardState.COMPLETED:
 			m_ChoppedList.Add(m_CurrentVegOnBoard);
-			SetState(BoardState.MAKE_SALAD);
+			if(m_ChoppedList.Count == 3)
+				SetState(BoardState.MAKE_SALAD);
+			else
+				SetState(BoardState.IDLE);
 			break;
 		case BoardState.MAKE_SALAD:
 			if(m_ChoppedList.Count == 3)
+			{
 				MakeSalad(m_ChoppedList);
+			}
+			SetState(BoardState.IDLE);
 			break;
 		}
 	}
@@ -168,12 +168,41 @@ public class ChoppingBoard : MonoBehaviour
 
 	private void MakeSalad(List<Vegetable> ChoppedList)
 	{
-		Debug.Log("Make salad");
+		//Debug.Log("Make salad");
+		List<VegetableType> vegetableTypes = new List<VegetableType>();
+		for(int i = 0; i< ChoppedList.Count; i++)
+		{
+			vegetableTypes.Add(m_ChoppedList[i].pVegetableType);
+		}
+
+		Salad salad = null;
+		if(vegetableTypes.Contains(VegetableType.ARTICHOKE) && vegetableTypes.Contains(VegetableType.BROCCOLLI) && vegetableTypes.Contains(VegetableType.ARTICHOKE))
+			salad = LevelManager.Instance.MakeSalad(SaladType.SALAD_ABC);
+		if(vegetableTypes.Contains(VegetableType.DASHEEN) && vegetableTypes.Contains(VegetableType.EGGPLANT) && vegetableTypes.Contains(VegetableType.FENNEL))
+			salad = LevelManager.Instance.MakeSalad(SaladType.SALAD_DEF);
+		if(vegetableTypes.Contains(VegetableType.BROCCOLLI) && vegetableTypes.Contains(VegetableType.CUCUMBER) && vegetableTypes.Contains(VegetableType.DASHEEN))
+			salad = LevelManager.Instance.MakeSalad(SaladType.SALAD_BCD);
+		if(vegetableTypes.Contains(VegetableType.CUCUMBER) && vegetableTypes.Contains(VegetableType.DASHEEN) && vegetableTypes.Contains(VegetableType.EGGPLANT))
+			salad = LevelManager.Instance.MakeSalad(SaladType.SALAD_CDE);
+		if(vegetableTypes.Contains(VegetableType.EGGPLANT) && vegetableTypes.Contains(VegetableType.FENNEL) && vegetableTypes.Contains(VegetableType.ARTICHOKE))
+			salad = LevelManager.Instance.MakeSalad(SaladType.SALAD_EFA);
+
+		for(int j = 0; j < m_ChoppedList.Count; j++)
+		{
+			GameObject go = Utilities.Util.FindChildObject(gameObject, m_ChoppedList[j].gameObject.name);
+			m_ChoppedList[j].transform.SetParent(null);
+			Destroy(go);
+		}
+		m_ChoppedList.Clear();
+		salad.gameObject.transform.parent = this.gameObject.transform;
+		Utilities.Util.SetDefaultLocalTransform(salad.gameObject);
 	}
 
 	public bool CanAdd()
 	{
-		return m_ChoppedList.Count == MAX_VEGETABLES ? false : true;
+		if( m_ChoppedList.Count != MAX_VEGETABLES && m_CurrentState != BoardState.CHOPPING)
+			return true;
+		return false;
 	}
 #endregion
 }

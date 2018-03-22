@@ -46,12 +46,14 @@ public class GameSession
 			newPlayer._playerIndex = PlayerIndex.PLAYER1;
 			newPlayer._characterName = "Jerry";
 			newPlayer._playerColor = PlayerColor.BLUE;
+			newPlayer._timer = 120.0f;
 		}
 		else
 		{
 			newPlayer._playerIndex = PlayerIndex.PLAYER2;
 			newPlayer._characterName = "Tom";
 			newPlayer._playerColor = PlayerColor.RED;
+			newPlayer._timer = 120.0f;
 		}
 
 		newPlayer._name = newPlayer._playerIndex.ToString();

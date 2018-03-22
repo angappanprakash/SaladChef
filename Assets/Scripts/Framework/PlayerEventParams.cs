@@ -74,3 +74,17 @@ public class OnRemoveVegetableEventArgs : PlayerEventParams
 		vegetable = veg;
 	}
 }
+
+public class OnSaladServedEventArgs : PlayerEventParams
+{
+	public SaladType saladType;
+	public PlayerController playerController;
+	public Customer customer;
+
+	public OnSaladServedEventArgs(SaladType salType, PlayerController player, Customer cus)
+	{
+		saladType = salType;
+		playerController = player;
+		customer = cus;
+	}
+}

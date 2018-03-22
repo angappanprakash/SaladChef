@@ -30,6 +30,7 @@ public class LevelManager : MonoBehaviour
 
 	private const string	DATA_ASSETS_PATH = "CharacterAssets/CharacterCommonData";
 	private const string	VEGETABLE_ASSETS_PATH = "Vegetables";
+	private const string	SALAD_ASSETS_PATH = "Salads";
 #endregion
 
 #region Properties
@@ -150,14 +151,21 @@ public class LevelManager : MonoBehaviour
 
 	public Vegetable CreateVegetable(VegetableDispenserType dispenserType)
 	{
-		GameObject go = (GameObject)Instantiate(Resources.Load(VEGETABLE_ASSETS_PATH+"/"+dispenserType.ToString()));
+		GameObject go = (GameObject)Instantiate(Resources.Load(VEGETABLE_ASSETS_PATH + "/" + dispenserType.ToString()));
 		return go.GetComponent<Vegetable>();
 	}
 
 	public Vegetable CreateVegetable(VegetableType veg)
 	{
-		GameObject go = (GameObject)Instantiate(Resources.Load(VEGETABLE_ASSETS_PATH+"/"+veg.ToString()));
+		GameObject go = (GameObject)Instantiate(Resources.Load(VEGETABLE_ASSETS_PATH + "/" + veg.ToString()));
 		return go.GetComponent<Vegetable>();
+	}
+
+	public Salad MakeSalad(SaladType saladType)
+	{
+		GameObject go = (GameObject)Instantiate(Resources.Load(SALAD_ASSETS_PATH + "/" + saladType.ToString()));
+		Utilities.Util.SetDefaultLocalTransform(go);
+		return go.GetComponent<Salad>();
 	}
 
 	public void EndGame()

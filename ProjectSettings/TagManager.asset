@@ -8,6 +8,7 @@ TagManager:
   - VegetableDispenser
   - ChoppingBoard
   - NextToChop
+  - Salads
   layers:
   - Default
   - TransparentFX

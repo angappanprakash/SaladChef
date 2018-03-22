@@ -8,7 +8,6 @@ namespace GameData
     [CreateAssetMenu(menuName = "GameAssets/Character")]
 	public class CharacterData : ScriptableObject
 	{
-
 		public string			_name;
 		public GameObject		_prefab;
 	}

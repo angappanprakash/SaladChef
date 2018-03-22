@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
 
 	private float 		m_VerticalSpeed = 0;
 	private Vector3 	m_MoveDirection = Vector3.zero;
-	private float 		m_TurnRate = 1000.0f;
+	private float 		m_TurnRate = 1500.0f;
 	private Rigidbody 	m_RigidBody;
 	private PlayerData 	m_PlayerData;
 
@@ -27,6 +27,11 @@ public class PlayerController : MonoBehaviour
 	private float 		m_MoveSpeed = 5;
 	private bool		m_IsInsideTrigger;
 	private GameObject 	m_CollidedObject;
+	private Salad		m_SaladOnHand;
+	[SerializeField]
+	private int			m_Score;
+	[SerializeField]
+	private float 		m_Timer;
 #endregion
 
 #region Properties
@@ -71,10 +76,14 @@ public class PlayerController : MonoBehaviour
 	{
 		m_CurrentState = PlayerState.SPAWN;
 		m_PrevState = PlayerState.NONE;
+		GameManager.Instance.pGameEventSystem.SubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_SUCCESS, OnSaladServeSuccess);
+		GameManager.Instance.pGameEventSystem.SubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_FAIL, OnSaladServeFail);
 	}
 
 	private void OnDisable()
 	{
+		GameManager.Instance.pGameEventSystem.UnsubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_SUCCESS, OnSaladServeSuccess);
+		GameManager.Instance.pGameEventSystem.UnsubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_FAIL, OnSaladServeFail);
 	}
 
 	private void Update()
@@ -84,7 +93,7 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerEnter(Collider collider)
 	{
-		if (collider.tag == "VegetableDispenser" || collider.tag == "ChoppingBoard" || collider.tag == "NextToChop" || collider.tag == "CustomerSlot")
+		if (collider.tag == "VegetableDispenser" || collider.tag == "ChoppingBoard" || collider.tag == "NextToChop" || collider.tag == "CustomerSlot" || collider.tag == "Salad")
 		{
 			m_CollidedObject = collider.gameObject;
 			m_IsInsideTrigger = true;
@@ -93,7 +102,7 @@ public class PlayerController : MonoBehaviour
 
 	private void OnTriggerExit(Collider collider)
 	{
-		if (collider.tag == "VegetableDispenser" || collider.tag == "ChoppingBoard" || collider.tag == "NextToChop" || collider.tag == "CustomerSlot")
+		if (collider.tag == "VegetableDispenser" || collider.tag == "ChoppingBoard" || collider.tag == "NextToChop" || collider.tag == "CustomerSlot" || collider.tag == "Salad")
 		{
 			m_CollidedObject = collider.gameObject;
 			m_IsInsideTrigger = false;
@@ -106,11 +115,26 @@ public class PlayerController : MonoBehaviour
 	#endregion
 
 	#region Class specific functions
+	private void OnSaladServeSuccess(PlayerEventParams eventArgs)
+	{
+		OnSaladServedEventArgs eventParams = (OnSaladServedEventArgs)eventArgs;
+		PlayerController playerController = eventParams.playerController;
+		if(m_PlayerIndex == playerController.m_PlayerIndex)
+			m_Score += 10;
+	}
+
+	private void OnSaladServeFail(PlayerEventParams eventArgs)
+	{
+		
+	}
+
 	public void Init(PlayerData playerData)
 	{
 		m_PlayerData = playerData;
+		m_Timer = playerData._timer;
 		m_PlayerIndex = m_PlayerData._playerIndex;
 		m_MoveDirection = transform.forward;
+		m_Score = 0;
 	}
 
 	private void OnPlayerInput(PlayerInputEventData eventData)
@@ -237,12 +261,23 @@ public class PlayerController : MonoBehaviour
 			}
 			break;
 		case "NextToChop":
-			if(m_Vegetables.Count > 0)
+			break;
+		case "Salad":
 			{
-				
+				Salad salad = m_CollidedObject.GetComponent<Salad>();
+				salad.transform.parent = this.gameObject.transform;
+				Utilities.Util.SetDefaultLocalTransform(salad.gameObject);
 			}
 			break;
 		case "Customer":
+			{
+				Customer customer = m_CollidedObject.GetComponent<Customer>();
+				Salad salad = m_SaladOnHand;
+				customer.OnSaladServed(salad.pSaladType, this.gameObject.GetComponent<PlayerController>());
+				GameObject saladObj = Utilities.Util.FindChildObject(gameObject, salad.gameObject.name);
+				saladObj.gameObject.transform.SetParent(null);
+				Destroy(saladObj);
+			}
 			break;
 		}
 

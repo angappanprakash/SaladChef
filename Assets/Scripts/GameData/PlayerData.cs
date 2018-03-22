@@ -11,6 +11,7 @@ namespace GameData
 		public string		_name;
 		public string 		_characterName;
 		public PlayerColor	_playerColor;
+		public float		_timer;
 	}
 
 	public enum PlayerIndex

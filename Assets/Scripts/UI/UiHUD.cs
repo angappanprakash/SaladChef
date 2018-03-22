@@ -44,6 +44,16 @@ public class UiHUD : MonoBehaviour
 	[SerializeField]
 	private Image			m_ImgBlueChoppingItem_3;
 
+	[SerializeField]
+	private Text			m_RedScore;
+	[SerializeField]
+	private Text			m_RedTimer;
+
+	[SerializeField]
+	private Text			m_BlueScore;
+	[SerializeField]
+	private Text			m_BlueTimer;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -74,18 +84,30 @@ public class UiHUD : MonoBehaviour
 	{
 		GameManager.Instance.pGameEventSystem.SubscribeEvent(GameEventsList.PlayerEvents.ON_COLLECT_VEGETABLE, OnCollectVegetable);
 		GameManager.Instance.pGameEventSystem.SubscribeEvent(GameEventsList.PlayerEvents.ON_REMOVE_VEGETABLE, OnRemoveVegetable);
+		GameManager.Instance.pGameEventSystem.SubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_SUCCESS, OnSaladServeSuccess);
+		GameManager.Instance.pGameEventSystem.SubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_FAIL, OnSaladServeFail);
 	}
 
 	void OnDisable()
 	{
 		GameManager.Instance.pGameEventSystem.UnsubscribeEvent(GameEventsList.PlayerEvents.ON_COLLECT_VEGETABLE, OnCollectVegetable);
 		GameManager.Instance.pGameEventSystem.UnsubscribeEvent(GameEventsList.PlayerEvents.ON_REMOVE_VEGETABLE, OnRemoveVegetable);
+		GameManager.Instance.pGameEventSystem.UnsubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_SUCCESS, OnSaladServeSuccess);
+		GameManager.Instance.pGameEventSystem.UnsubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_FAIL, OnSaladServeFail);
 	}
 
 	// Update is called once per frame
 	void Update ()
 	{
 		
+	}
+
+	private void OnSaladServeSuccess(PlayerEventParams eventArgs)
+	{
+	}
+
+	private void OnSaladServeFail(PlayerEventParams eventArgs)
+	{
 	}
 
 	void OnCollectVegetable(PlayerEventParams eventArgs)
@@ -111,23 +133,23 @@ public class UiHUD : MonoBehaviour
 
 	void OnRemoveVegetable(PlayerEventParams eventArgs)
 	{
-		OnCollectVegetableEventArgs eventParams = (OnCollectVegetableEventArgs)eventArgs;
-		PlayerController playerController = eventParams.playerController;
-
-		if(playerController.pPlayerData._playerColor == PlayerColor.BLUE)
-		{
-			if(playerController.m_Vegetables.Count == 1)
-				m_TxtBlueItem_1.text = GetVegName(eventParams.vegetable.pVegetableType);
-			else if(playerController.m_Vegetables.Count == 2)
-				m_TxtBlueItem_2.text = GetVegName(eventParams.vegetable.pVegetableType);
-		}
-		else if(playerController.pPlayerData._playerColor == PlayerColor.RED)
-		{
-			if(playerController.m_Vegetables.Count == 1)
-				m_TxtRedItem_1.text = GetVegName(eventParams.vegetable.pVegetableType);
-			else if(playerController.m_Vegetables.Count == 2)
-				m_TxtRedItem_2.text = GetVegName(eventParams.vegetable.pVegetableType);
-		}
+//		OnCollectVegetableEventArgs eventParams = (OnCollectVegetableEventArgs)eventArgs;
+//		PlayerController playerController = eventParams.playerController;
+//
+//		if(playerController.pPlayerData._playerColor == PlayerColor.BLUE)
+//		{
+//			if(playerController.m_Vegetables.Count == 1)
+//				m_TxtBlueItem_1.text = GetVegName(eventParams.vegetable.pVegetableType);
+//			else if(playerController.m_Vegetables.Count == 2)
+//				m_TxtBlueItem_2.text = GetVegName(eventParams.vegetable.pVegetableType);
+//		}
+//		else if(playerController.pPlayerData._playerColor == PlayerColor.RED)
+//		{
+//			if(playerController.m_Vegetables.Count == 1)
+//				m_TxtRedItem_1.text = GetVegName(eventParams.vegetable.pVegetableType);
+//			else if(playerController.m_Vegetables.Count == 2)
+//				m_TxtRedItem_2.text = GetVegName(eventParams.vegetable.pVegetableType);
+//		}
 	}
 
 	string GetVegName(VegetableType vegType)
