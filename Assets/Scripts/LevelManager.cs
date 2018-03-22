@@ -22,7 +22,8 @@ public class LevelManager : MonoBehaviour
 
 	[SerializeField]
 	private Transform[] 			m_PlayerSpawnMarkers;
-
+	[SerializeField]
+	private GameObject				m_PauseMenu;
 	[SerializeField]
 	private CameraControl           m_CameraControl;
 	private List<PlayerController> 	m_PlayersList;
@@ -33,6 +34,7 @@ public class LevelManager : MonoBehaviour
 	private CharacterCommonData		m_CharacterCommonData;
 	private int                     m_NextSpawnMarkerIndex;
 	private Transform               m_SpawnMarkersParent;
+
 #endregion
 
 #region Properties
@@ -87,6 +89,7 @@ public class LevelManager : MonoBehaviour
 
 	private void Start()
 	{
+		ShowPauseMenu(false);
 		InvokeRepeating ("Countdown", 1.0f, 1.0f);
 	}
 
@@ -108,6 +111,10 @@ public class LevelManager : MonoBehaviour
 //			{
 //				EndGame();
 //			}
+		}
+		if(Input.GetKeyDown(KeyCode.Escape) && !m_PauseMenu.gameObject.activeSelf)
+		{
+			ShowPauseMenu(true);
 		}
 	}
 
@@ -205,42 +212,18 @@ public class LevelManager : MonoBehaviour
 		m_CameraControl.Init(targets);
 	}
 
-	public void PauseGame(PlayerIndex playerIndex)
+	public void ShowPauseMenu(bool flag)
 	{
-		GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.GAME_PAUSED, new GamePausedEventArgs());
-
-		Time.timeScale = 0;
-		m_CurrentGameState = GameState.PAUSED;
-		ShowPauseMenu(playerIndex);
-	}
-
-	public void ResumeGame()
-	{
-		Time.timeScale = 1;
-		m_CurrentGameState = GameState.IN_PROGRESS;
-
-		GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.GAME_RESUMED, new GameResumedEventArgs());
-	}
-
-	public void ResetCurrentLevel()
-	{
-		SceneManager.LoadScene("Game");
-	}
-
-	public void ShowPauseMenu(PlayerIndex playerIndex)
-	{
+		if(flag)
+			Time.timeScale = 0;
+		else
+			Time.timeScale = 1;
+		m_PauseMenu.gameObject.SetActive(flag);
 	}
 
 	public void SetGameDuration(float duration)
 	{
 		m_GameTimer = duration;
-	}
-
-	private IEnumerator ShowGameEndAfterDelay()
-	{
-		yield return new WaitForSeconds(2.5f);
-
-		SceneManager.LoadScene("ResultScreen");
 	}
 
 	public void LoadMainMenu()
