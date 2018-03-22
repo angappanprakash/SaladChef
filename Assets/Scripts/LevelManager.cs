@@ -86,11 +86,16 @@ public class LevelManager : MonoBehaviour
 	{
 		if(m_CurrentGameState == GameState.IN_PROGRESS)
 		{
-			if(m_GameTimer > 0)
+//			if(m_GameTimer > 0)
+//			{
+//				m_GameTimer = Mathf.Max(0, m_GameTimer - Time.deltaTime);
+//				if(m_GameTimer == 0)
+//					EndGame();
+//			}
+//
+			if(GameManager.Instance.pCurrentGameSession.GetPlayerData(PlayerIndex.PLAYER1)._timer == 0.0f && GameManager.Instance.pCurrentGameSession.GetPlayerData(PlayerIndex.PLAYER2)._timer == 0.0f)
 			{
-				m_GameTimer = Mathf.Max(0, m_GameTimer - Time.deltaTime);
-				if(m_GameTimer == 0)
-					EndGame();
+				EndGame();
 			}
 		}
 	}
@@ -133,12 +138,15 @@ public class LevelManager : MonoBehaviour
 		CharacterData characterData = CharacterDataLoader.GetData(playerData._characterName);
 		GameObject playerObj = Instantiate(characterData._prefab) as GameObject;
 		playerObj.name = playerData._name;
+		float timer = characterData._timer;
+
 		if(spawnMarker != null)
 		{
 			playerObj.transform.position = spawnMarker.position;
 			playerObj.transform.rotation = spawnMarker.rotation;
 		}
 		PlayerController playerController = playerObj.GetComponent<PlayerController>();
+		playerController.pTimer = timer;
 		playerController.Init(playerData);
 
 		return playerController;
@@ -161,10 +169,9 @@ public class LevelManager : MonoBehaviour
 		return go.GetComponent<Vegetable>();
 	}
 
-	public Salad MakeSalad(SaladType saladType)
+	public Salad CreateSalad(SaladType saladType)
 	{
 		GameObject go = (GameObject)Instantiate(Resources.Load(SALAD_ASSETS_PATH + "/" + saladType.ToString()));
-		Utilities.Util.SetDefaultLocalTransform(go);
 		return go.GetComponent<Salad>();
 	}
 
@@ -172,6 +179,7 @@ public class LevelManager : MonoBehaviour
 	{
 		m_CurrentGameState = GameState.ENDED;
 		GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.GAME_END, new GameEndEventArgs());
+		SceneManager.LoadScene("ResultScreen");
 	}
 
 	private void SetCameraTargets()

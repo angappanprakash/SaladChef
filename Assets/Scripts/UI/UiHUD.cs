@@ -45,14 +45,14 @@ public class UiHUD : MonoBehaviour
 	private Image			m_ImgBlueChoppingItem_3;
 
 	[SerializeField]
-	private Text			m_RedScore;
+	private Text			m_TxtRedScore;
 	[SerializeField]
-	private Text			m_RedTimer;
+	private Text			m_TxtRedTimer;
 
 	[SerializeField]
-	private Text			m_BlueScore;
+	private Text			m_TxtBlueScore;
 	[SerializeField]
-	private Text			m_BlueTimer;
+	private Text			m_TxtBlueTimer;
 
 	// Use this for initialization
 	void Start () 
@@ -70,6 +70,11 @@ public class UiHUD : MonoBehaviour
 		m_TxtBlueChoppingItem_1.text = "";
 		m_TxtBlueChoppingItem_2.text = "";
 		m_TxtBlueChoppingItem_3.text = "";
+
+		m_TxtRedScore.text = "";
+		m_TxtRedTimer.text = "";
+		m_TxtBlueScore.text = "";
+		m_TxtBlueTimer.text = "";
 
 		m_ImgRedChoppingItem_1.gameObject.SetActive(false);
 		m_ImgRedChoppingItem_2.gameObject.SetActive(false);
@@ -104,6 +109,17 @@ public class UiHUD : MonoBehaviour
 
 	private void OnSaladServeSuccess(PlayerEventParams eventArgs)
 	{
+		OnSaladServedEventArgs eventParams = (OnSaladServedEventArgs)eventArgs;
+		PlayerController playerController = eventParams.playerController;
+		playerController.pPlayerData._score += 10;
+		if(playerController.pPlayerIndex == PlayerIndex.PLAYER1)
+		{
+			m_TxtBlueScore.text = playerController.pPlayerData._score.ToString();
+		}
+		else if(playerController.pPlayerIndex == PlayerIndex.PLAYER2)
+		{
+			m_TxtRedScore.text = playerController.pPlayerData._score.ToString();
+		}
 	}
 
 	private void OnSaladServeFail(PlayerEventParams eventArgs)

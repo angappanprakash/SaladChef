@@ -8,7 +8,10 @@ TagManager:
   - VegetableDispenser
   - ChoppingBoard
   - NextToChop
-  - Salads
+  - Customer
+  - Salad
+  - TrashCan
+  - PowerUp
   layers:
   - Default
   - TransparentFX

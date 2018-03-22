@@ -24,7 +24,7 @@ public class Salad : MonoBehaviour
 {
 #region Variables
 	[SerializeField]
-	protected SaladType 		_saladType;
+	protected SaladType 		m_SaladType;
 	private PlayerController 	m_Owner;
 
 	protected SaladState		m_CurrentState;
@@ -36,7 +36,7 @@ public class Salad : MonoBehaviour
 #region Properties
 	public SaladType pSaladType
 	{
-		get { return _saladType; }
+		get { return m_SaladType; }
 	}
 
 	public SaladState pCurrentState

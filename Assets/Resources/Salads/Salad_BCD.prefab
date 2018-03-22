@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 114942029148492408}
   m_Layer: 0
   m_Name: Salad_BCD
-  m_TagString: Salads
+  m_TagString: Salad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,7 +147,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1392478270544776}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d115b965a05e854d8a458a887bb5fc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _saladType: 2
+  m_SaladType: 2
 --- !u!114 &114973263617489084
 MonoBehaviour:
   m_ObjectHideFlags: 1

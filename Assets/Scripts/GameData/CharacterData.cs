@@ -10,6 +10,7 @@ namespace GameData
 	{
 		public string			_name;
 		public GameObject		_prefab;
+		public float			_timer;
 	}
 
 	public class CharacterDataLoader

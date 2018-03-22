@@ -293,3 +293,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _vegetableType: 2
+  m_ChoppingDuration: 1

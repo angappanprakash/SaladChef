@@ -25,8 +25,8 @@ public class Customer : MonoBehaviour
 	private bool						m_IsHighlighted;
 	private PlayerController 			m_CollidedPlayer;
 
-	private BoardState					m_CurrentState;
-	private BoardState					m_PrevState;
+	private ChoppingBoardState					m_CurrentState;
+	private ChoppingBoardState					m_PrevState;
 	private float						m_StateTimer;
 
 	private PlayerController			m_LastServedOwner;
@@ -38,7 +38,7 @@ public class Customer : MonoBehaviour
 		get { return m_SaladType; }
 	}
 
-	public BoardState pCurrentState
+	public ChoppingBoardState pCurrentState
 	{
 		get { return m_CurrentState; }
 	}
@@ -94,7 +94,7 @@ public class Customer : MonoBehaviour
 			GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_FAIL, new OnSaladServedEventArgs(m_SaladType, m_LastServedOwner, this.gameObject.GetComponent<Customer>()));			
 	}
 
-	public void SetState(BoardState state, object data = null)
+	public void SetState(ChoppingBoardState state, object data = null)
 	{
 		if (m_CurrentState == state)
 			return;
@@ -105,7 +105,7 @@ public class Customer : MonoBehaviour
 
 		switch (m_CurrentState)
 		{
-		case BoardState.IDLE:
+		case ChoppingBoardState.IDLE:
 			break;
 		}
 	}
