@@ -44,9 +44,10 @@ public class GameEndEventArgs : PlayerEventParams
 public class ScoreUpdateEventArgs : PlayerEventParams
 {
 	public int NewScore;
-	public ScoreUpdateEventArgs(PlayerIndex playerIndex, int newScore)
+	public PlayerController playerController;
+	public ScoreUpdateEventArgs(PlayerController playerCtrlr, int newScore)
 	{
-		PlayerIndex = playerIndex;
+		playerController = playerCtrlr;
 		NewScore = newScore;
 	}
 }

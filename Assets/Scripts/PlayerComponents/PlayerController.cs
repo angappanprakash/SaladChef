@@ -33,6 +33,9 @@ public class PlayerController : MonoBehaviour
 	[SerializeField]
 	private float 		m_Timer;
 	[SerializeField]
+	private GameObject	m_PlayerAttachmentNode_1;
+	[SerializeField]
+	private GameObject	m_PlayerAttachmentNode_2;
 #endregion
 
 #region Properties
@@ -81,7 +84,8 @@ public class PlayerController : MonoBehaviour
 
 	private void Start()
 	{
-		InvokeRepeating ("Countdown", 1.0f, 1.0f);
+		m_PlayerAttachmentNode_1.gameObject.SetActive(false);
+		m_PlayerAttachmentNode_2.gameObject.SetActive(false);
 	}
 
 	private void OnEnable()
@@ -127,20 +131,9 @@ public class PlayerController : MonoBehaviour
 	public void Init(PlayerData playerData)
 	{
 		m_PlayerData = playerData;
-		//Debug.Log("timer: "+ m_Timer);
 		m_PlayerIndex = m_PlayerData._playerIndex;
 		m_MoveDirection = transform.forward;
 		m_Score = 0;
-	}
-
-	private void Countdown () 
-	{
-		//Debug.Log("timer count down:" + m_Timer);
-		if (--m_Timer == 0) 
-		{
-			m_PlayerData._timer = m_Timer;
-			CancelInvoke ("Countdown");
-		}
 	}
 
 	private void OnPlayerInput(PlayerInputEventData eventData)
@@ -326,6 +319,24 @@ public class PlayerController : MonoBehaviour
 			veg.pOwner = this.gameObject.GetComponent<PlayerController>();
 			Utilities.Util.SetDefaultLocalTransform(veg.gameObject);
 			m_Vegetables.Add(veg);
+
+			if(m_Vegetables.Count == 1)
+			{
+				m_PlayerAttachmentNode_1.gameObject.SetActive(true);
+				TextMesh textMesh = m_PlayerAttachmentNode_1.GetComponentInChildren<TextMesh>();
+				textMesh.text = Utilities.Util.GetVegId(veg.pVegetableType);
+			}
+			else if(m_Vegetables.Count == 2)
+			{
+				m_PlayerAttachmentNode_2.gameObject.SetActive(true);
+				TextMesh textMesh = m_PlayerAttachmentNode_2.GetComponentInChildren<TextMesh>();
+				textMesh.text = Utilities.Util.GetVegId(veg.pVegetableType);
+			}
+			else
+			{
+				m_PlayerAttachmentNode_1.gameObject.SetActive(false);
+				m_PlayerAttachmentNode_2.gameObject.SetActive(false);
+			}
 			GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.ON_COLLECT_VEGETABLE, new OnCollectVegetableEventArgs(this.gameObject.GetComponent<PlayerController>(), veg));
 		}
 	}

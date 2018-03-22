@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
 	[SerializeField]
 	private GameEventSystem 	m_GameEventSystem;
 	private string 				m_CurrentLevelName;
+	[SerializeField]
+	private AudioManager        m_AudioManager;
+	[SerializeField]
+	private float				m_GameTimer;
 #endregion
 
 #region Properties
@@ -32,10 +36,9 @@ public class GameManager : MonoBehaviour
 		get { return m_GameEventSystem; }
 	}
 
-	public string pCurrentLevelName
+	public float pGameTimer
 	{
-		get	{ return m_CurrentLevelName; }
-		set	{ m_CurrentLevelName = value; }
+		get { return m_GameTimer; }
 	}
 #endregion
 
@@ -43,7 +46,9 @@ public class GameManager : MonoBehaviour
 	private void Awake()
 	{
 		m_Instance = this;
+		m_AudioManager.Init();
 		m_CurrentGameSession = new GameSession();
+		m_AudioManager.PlayInGameBGM();
 		CharacterDataLoader.Init();
 		SceneManager.LoadScene("MainMenu");
 	}

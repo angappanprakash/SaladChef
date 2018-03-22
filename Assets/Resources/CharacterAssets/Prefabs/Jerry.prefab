@@ -601,6 +601,8 @@ MonoBehaviour:
   m_Vegetables: []
   m_Score: 0
   m_Timer: 0
+  m_PlayerAttachmentNode_1: {fileID: 1695876114467122}
+  m_PlayerAttachmentNode_2: {fileID: 1641123078101682}
 --- !u!114 &114370976779638726
 MonoBehaviour:
   m_ObjectHideFlags: 1

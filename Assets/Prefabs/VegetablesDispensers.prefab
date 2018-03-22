@@ -1843,8 +1843,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3, y: 2, z: 1}
+  m_Center: {x: -0.79, y: 0, z: 0}
 --- !u!65 &65303380823268858
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1855,8 +1855,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3, y: 2, z: 1}
+  m_Center: {x: 0.96, y: 0, z: 0}
 --- !u!65 &65389401509959544
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1867,8 +1867,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3, y: 2, z: 1}
+  m_Center: {x: 0.96, y: 0, z: 0}
 --- !u!65 &65612213148534464
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1879,8 +1879,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3, y: 2, z: 1}
+  m_Center: {x: -0.79, y: 0, z: 0}
 --- !u!65 &65639417119183430
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1891,8 +1891,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3, y: 2, z: 1}
+  m_Center: {x: -0.79, y: 0, z: 0}
 --- !u!65 &65886166742898424
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -1903,8 +1903,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3, y: 2, z: 1}
+  m_Center: {x: 0.96, y: 0, z: 0}
 --- !u!102 &102074617696115494
 TextMesh:
   serializedVersion: 3

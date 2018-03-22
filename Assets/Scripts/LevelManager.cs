@@ -21,10 +21,12 @@ public class LevelManager : MonoBehaviour
 	private const string	SALAD_ASSETS_PATH = "Salads";
 
 	[SerializeField]
-	private Transform[] 			m_SpawnMarkers;
+	private Transform[] 			m_PlayerSpawnMarkers;
+
 	[SerializeField]
 	private CameraControl           m_CameraControl;
 	private List<PlayerController> 	m_PlayersList;
+	private List<PowerUp>			m_PowerUpList;
 	private float					m_GameTimer;
 	private GameState				m_CurrentGameState;
 	private static LevelManager 	m_Instance;
@@ -42,6 +44,11 @@ public class LevelManager : MonoBehaviour
 	public List<PlayerController> pPlayersList
 	{
 		get { return m_PlayersList; }
+	}
+
+	public List<PowerUp> pPowerUpsList
+	{
+		get { return m_PowerUpList; }
 	}
 
 	public float pGameTimer
@@ -114,13 +121,13 @@ public class LevelManager : MonoBehaviour
 	private void StartGame()
 	{
 		Time.timeScale = 1;
-		SetGameDuration(10.0f);
+		SetGameDuration(GameManager.Instance.pGameTimer);
 
 		m_PlayersList = new List<PlayerController>();
 		foreach (PlayerData playerData in GameManager.Instance.pCurrentGameSession.pActivePlayers)
 		{
 			PlayerController playerController;
-			playerController = CreatePlayerInstance(playerData, m_SpawnMarkers[GetNextSpawnMarkerIndex()]);
+			playerController = CreatePlayerInstance(playerData, m_PlayerSpawnMarkers[GetNextSpawnMarkerIndex()]);
 			//Debug.Log("spawn marker index:"+ m_SpawnMarkers[GetNextSpawnMarkerIndex()].name);
 
 			m_PlayersList.Add(playerController);
@@ -135,7 +142,7 @@ public class LevelManager : MonoBehaviour
 
 	private int GetNextSpawnMarkerIndex()
 	{
-		return ((++m_NextSpawnMarkerIndex) % m_SpawnMarkers.Length);
+		return ((++m_NextSpawnMarkerIndex) % m_PlayerSpawnMarkers.Length);
 	}
 
 	private PlayerController CreatePlayerInstance(PlayerData playerData, Transform spawnMarker = null)
@@ -244,7 +251,7 @@ public class LevelManager : MonoBehaviour
 
 	private void Countdown () 
 	{
-		Debug.Log("timer count down:" + m_GameTimer);
+		//Debug.Log("timer count down:" + m_GameTimer);
 		if (--m_GameTimer == 0)
 			CancelInvoke ("Countdown");
 	}

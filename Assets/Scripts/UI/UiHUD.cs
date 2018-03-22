@@ -96,6 +96,8 @@ public class UiHUD : MonoBehaviour
 		GameManager.Instance.pGameEventSystem.SubscribeEvent(GameEventsList.PlayerEvents.ON_REMOVE_VEGETABLE, OnRemoveVegetable);
 		GameManager.Instance.pGameEventSystem.SubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_SUCCESS, OnSaladServeSuccess);
 		GameManager.Instance.pGameEventSystem.SubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_FAIL, OnSaladServeFail);
+
+		GameManager.Instance.pGameEventSystem.SubscribeEvent(GameEventsList.PlayerEvents.ON_SCORE_UPDATE, OnScoreUpdate);
 	}
 
 	void OnDisable()
@@ -104,6 +106,8 @@ public class UiHUD : MonoBehaviour
 		GameManager.Instance.pGameEventSystem.UnsubscribeEvent(GameEventsList.PlayerEvents.ON_REMOVE_VEGETABLE, OnRemoveVegetable);
 		GameManager.Instance.pGameEventSystem.UnsubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_SUCCESS, OnSaladServeSuccess);
 		GameManager.Instance.pGameEventSystem.UnsubscribeEvent(GameEventsList.PlayerEvents.ON_SALAD_SERVE_FAIL, OnSaladServeFail);
+
+		GameManager.Instance.pGameEventSystem.UnsubscribeEvent(GameEventsList.PlayerEvents.ON_SCORE_UPDATE, OnScoreUpdate);
 	}
 
 	// Update is called once per frame
@@ -131,7 +135,7 @@ public class UiHUD : MonoBehaviour
 	{
 	}
 
-	void OnCollectVegetable(PlayerEventParams eventArgs)
+	private void OnCollectVegetable(PlayerEventParams eventArgs)
 	{
 		OnCollectVegetableEventArgs eventParams = (OnCollectVegetableEventArgs)eventArgs;
 		PlayerController playerController = eventParams.playerController;
@@ -191,5 +195,20 @@ public class UiHUD : MonoBehaviour
 			return "FENNEL";
 		}
 		return "INVALID";
+	}
+
+	private void OnScoreUpdate(PlayerEventParams eventArgs)
+	{
+		ScoreUpdateEventArgs scoreUpdateEventParams = (ScoreUpdateEventArgs)eventArgs;
+		PlayerController playerController = scoreUpdateEventParams.playerController;
+		playerController.pPlayerData._score += scoreUpdateEventParams.NewScore;
+		if(playerController.pPlayerIndex == PlayerIndex.PLAYER1)
+		{
+			m_TxtBlueScore.text = playerController.pPlayerData._score.ToString();
+		}
+		else if(playerController.pPlayerIndex == PlayerIndex.PLAYER2)
+		{
+			m_TxtRedScore.text = playerController.pPlayerData._score.ToString();
+		}
 	}
 }
