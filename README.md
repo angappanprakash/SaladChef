@@ -53,3 +53,9 @@ Things need to done:
 1. Importing place holder art assets - 3d/2d from unity assets.
 2. Texture packer for after adding more textures. 
 3. Every vegetable/salad/power up class can be overridden on their child classes for their specific behaviour.
+
+Features to think about:
+1. Different Game modes - Team based, Free for all.
+2. Different levels/maps
+
+
