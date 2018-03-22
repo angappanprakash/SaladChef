@@ -56,6 +56,12 @@ Things need to done:
 
 Features to think about:
 1. Different Game modes - Team based, Free for all.
-2. Different levels/maps
+2. Different levels/maps.
 
+//--Code Design---
+1. Its a mixture of data driven and state base and extendable classes.
+2. Singleton classes - All manager class, such as game manager, Level manager, Audio manager and etc.
+3. Generic Game Event System - To avoid having delegats all over, to keep everything in a place and clean.
+4. Base classes with virtual functions - To override specific behaviours in child class, such as vegetable, salad and power up
+5. States - Game states and Player states and can be added to every other objects
 
