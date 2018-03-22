@@ -350,6 +350,11 @@ public class PlayerController : MonoBehaviour
 			GameManager.Instance.pGameEventSystem.TriggerEvent(GameEventsList.PlayerEvents.ON_REMOVE_VEGETABLE, new OnRemoveVegetableEventArgs(this.gameObject.GetComponent<PlayerController>(), vegetable));
 			m_Vegetables.Remove(vegetable);
 		}
+		if(m_Vegetables.Count == 0)
+		{
+			m_PlayerAttachmentNode_1.gameObject.SetActive(false);
+			m_PlayerAttachmentNode_2.gameObject.SetActive(false);
+		}
 	}
 	#endregion
 }
