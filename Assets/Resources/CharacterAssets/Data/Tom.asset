@@ -13,4 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Tom
   _prefab: {fileID: 1578170525160972, guid: 12fd20484f1adb140a4e68fa464eafa9, type: 2}
-  _timer: 10
+  _timer: 20
