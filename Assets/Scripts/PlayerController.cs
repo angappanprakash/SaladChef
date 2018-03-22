@@ -315,11 +315,6 @@ public class PlayerController : MonoBehaviour
 		}
 	}
 
-	private Vegetable GetNextVegOnList()
-	{
-		return m_Vegetables[0];
-	}
-
 	private void AddVegetable(VegetableDispenserType DispenserType)
 	{
 		if(m_Vegetables != null)

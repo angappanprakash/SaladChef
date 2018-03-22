@@ -54,6 +54,9 @@ public class UiHUD : MonoBehaviour
 	[SerializeField]
 	private Text			m_TxtBlueTimer;
 
+	[SerializeField]
+	private Text 			m_TxtGameTimer;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -75,6 +78,8 @@ public class UiHUD : MonoBehaviour
 		m_TxtRedTimer.text = "";
 		m_TxtBlueScore.text = "";
 		m_TxtBlueTimer.text = "";
+
+		m_TxtGameTimer.text = "";
 
 		m_ImgRedChoppingItem_1.gameObject.SetActive(false);
 		m_ImgRedChoppingItem_2.gameObject.SetActive(false);
@@ -104,7 +109,7 @@ public class UiHUD : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		
+		m_TxtGameTimer.text = LevelManager.Instance.pGameTimer.ToString();
 	}
 
 	private void OnSaladServeSuccess(PlayerEventParams eventArgs)

@@ -16,6 +16,10 @@ public enum GameState
 public class LevelManager : MonoBehaviour
 {
 #region Variables
+	private const string	DATA_ASSETS_PATH = "CharacterAssets/CharacterCommonData";
+	private const string	VEGETABLE_ASSETS_PATH = "Vegetables";
+	private const string	SALAD_ASSETS_PATH = "Salads";
+
 	[SerializeField]
 	private Transform[] 			m_SpawnMarkers;
 	[SerializeField]
@@ -27,10 +31,6 @@ public class LevelManager : MonoBehaviour
 	private CharacterCommonData		m_CharacterCommonData;
 	private int                     m_NextSpawnMarkerIndex;
 	private Transform               m_SpawnMarkersParent;
-
-	private const string	DATA_ASSETS_PATH = "CharacterAssets/CharacterCommonData";
-	private const string	VEGETABLE_ASSETS_PATH = "Vegetables";
-	private const string	SALAD_ASSETS_PATH = "Salads";
 #endregion
 
 #region Properties
@@ -80,6 +80,7 @@ public class LevelManager : MonoBehaviour
 
 	private void Start()
 	{
+		InvokeRepeating ("Countdown", 1.0f, 1.0f);
 	}
 
 	private void Update()
@@ -92,11 +93,14 @@ public class LevelManager : MonoBehaviour
 //				if(m_GameTimer == 0)
 //					EndGame();
 //			}
-//
-			if(GameManager.Instance.pCurrentGameSession.GetPlayerData(PlayerIndex.PLAYER1)._timer == 0.0f && GameManager.Instance.pCurrentGameSession.GetPlayerData(PlayerIndex.PLAYER2)._timer == 0.0f)
-			{
+
+			if(m_GameTimer == 0)
 				EndGame();
-			}
+//
+//			if(GameManager.Instance.pCurrentGameSession.GetPlayerData(PlayerIndex.PLAYER1)._timer == 0.0f && GameManager.Instance.pCurrentGameSession.GetPlayerData(PlayerIndex.PLAYER2)._timer == 0.0f)
+//			{
+//				EndGame();
+//			}
 		}
 	}
 
@@ -110,6 +114,7 @@ public class LevelManager : MonoBehaviour
 	private void StartGame()
 	{
 		Time.timeScale = 1;
+		SetGameDuration(10.0f);
 
 		m_PlayersList = new List<PlayerController>();
 		foreach (PlayerData playerData in GameManager.Instance.pCurrentGameSession.pActivePlayers)
@@ -236,5 +241,13 @@ public class LevelManager : MonoBehaviour
 		Time.timeScale = 1;
 		SceneManager.LoadScene("MainMenu");
 	}
+
+	private void Countdown () 
+	{
+		Debug.Log("timer count down:" + m_GameTimer);
+		if (--m_GameTimer == 0)
+			CancelInvoke ("Countdown");
+	}
+
 #endregion
 }
